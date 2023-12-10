@@ -1,0 +1,51 @@
+﻿<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:viewmodels="clr-namespace:Password.ViewModels"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="Password.Views.PopupAdd">
+
+    <ContentPage.BindingContext>
+        <viewmodels:PopupAddViewModel/>
+    </ContentPage.BindingContext>
+
+    <!-- Contenu de votre popup -->
+    <StackLayout Padding="20" BackgroundColor="White" VerticalOptions="FillAndExpand">
+      
+        <!-- Titre de la popup -->
+        <Label Margin="0,50,0,0" Text="Add an App" FontSize="25" FontAttributes="Bold" HorizontalOptions="Center" />
+
+        <!-- Nested layout for centering -->
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+
+            <!-- Formulaire pour ajouter une application -->
+            <Entry WidthRequest="280" Placeholder="Application name" Text="{Binding Application}" />
+            <Entry WidthRequest="280" Placeholder="Username" Text="{Binding UserNameApp}" />
+            <Entry WidthRequest="280" Placeholder="Password" Text="{Binding PasswordApp}" IsPassword="True" />
+
+            <Label WidthRequest="280" Text="{Binding PasswordStrength, StringFormat='Strength: {0}'}" HorizontalTextAlignment="Start">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding PasswordStrength}" Value="Low">
+                        <Setter Property="TextColor" Value="Red" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding PasswordStrength}" Value="Medium">
+                        <Setter Property="TextColor" Value="Orange" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding PasswordStrength}" Value="High">
+                        <Setter Property="TextColor" Value="Green" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding PasswordStrength}" Value="VeryHigh">
+                        <Setter Property="TextColor" Value="Green" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <Entry WidthRequest="280" Placeholder="Email" Text="{Binding Email}" />
+            <Entry WidthRequest="280" Placeholder="URL" Text="{Binding URL}" />
+
+            <!-- Bouton d'ajout -->
+            <Button Text="Add" BackgroundColor="#ff8a78" TextColor="White" CornerRadius="5" Command="{Binding AddAppCommand}" />
+
+            <!-- Bouton de fermeture de la popup -->
+            <Button Text="Close" BackgroundColor="#ff416f" TextColor="White" CornerRadius="5" Command="{Binding ClosePopupCommand}" />
+        </StackLayout>
+    </StackLayout>
+</popup:PopupPage>

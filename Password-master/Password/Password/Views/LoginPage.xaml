@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Racine de la page de connexion -->
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Password.ViewModels"
+             mc:Ignorable="d"
+             x:Class="Password.Views.LoginPage"
+             Shell.NavBarIsVisible="False">
+
+    <!-- Liaison avec le ViewModel -->
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Ressources pour le gradient de l'arrière-plan -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="1,0" EndPoint="1,1">
+                <GradientStop Color="#ff8a78" Offset="0.0"/>
+                <GradientStop Color="#ff8a78" Offset="0.2"/>
+                <GradientStop Color="#ff5772" Offset="0.8"/>
+                <GradientStop Color="#ff416f" Offset="1.0"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Contenu principal de la page -->
+    <ContentPage.Content>
+        <Grid Background="{StaticResource BackgroundGradient}">
+
+            <!-- Cadre principal pour le contenu -->
+            <Frame CornerRadius="12" 
+                   Padding="0"
+                   BackgroundColor="Transparent"
+                   Opacity="0.95">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Contenu du cadre principal -->
+                    <StackLayout WidthRequest="220"
+                                 Grid.Row="1"
+                                 Spacing="10"
+                                 Margin="0,35,0,0">
+                        <Image Source="Logo.png"
+                               WidthRequest="150" 
+                               HeightRequest="150"/>
+
+                        <Label Text="Please sign in to continue"
+                               TextColor="white"
+                               FontSize="20"
+                               FontFamily="Montserrat"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"/>
+
+                        <!-- Zone d'entrée de l'utilisateur -->
+                        <Frame CornerRadius="30"            
+                               BackgroundColor="#ff8283"
+                               Padding="5"
+                               HasShadow="False"
+                               BorderColor="#ff8991"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               WidthRequest="280">
+                            <Entry x:Name="txtUser"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   FontFamily="Montserrat"
+                                   TextColor="White"
+                                   Placeholder="Username"
+                                   PlaceholderColor="WhiteSmoke"
+                                   Text="{Binding User, Mode=TwoWay}"
+                                   BackgroundColor="Transparent"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="Center"
+                                   Margin="0,0,0,10"/>
+                        </Frame>
+
+                        <!-- Zone d'entrée du mot de passe -->
+                        <Frame CornerRadius="30"            
+                               BackgroundColor="#ff8283"
+                               Padding="5"
+                               HasShadow="False"
+                               BorderColor="#ff8991"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               WidthRequest="280">
+                            <Entry x:Name="txtPass"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   FontFamily="Montserrat"
+                                   TextColor="white"        
+                                   IsPassword="True"
+                                   Placeholder="Password"
+                                   PlaceholderColor="WhiteSmoke"
+                                   Text="{Binding Password, Mode=TwoWay}"
+                                   BackgroundColor="Transparent"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="Center"
+                                   Margin="0,0,0,10"/>
+                        </Frame>
+
+                        <!-- Bouton de connexion -->
+                        <Button x:Name="btnLogin"
+                                WidthRequest="280"
+                                HorizontalOptions="Center"
+                                BorderWidth="0"
+                                Text="LOG IN"
+                                TextColor="#ff416f"
+                                FontSize="14"
+                                FontFamily="Montserrat"
+                                BackgroundColor="white"
+                                CornerRadius="30"
+                                Margin="0,0,0,10"
+                                Command="{Binding LoginCommand}"
+                                CommandParameter="{Binding Source={x:Reference txtPass}, Path=Text}" />
+
+
+                        <!-- Liens pour l'inscription -->
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="CenterAndExpand">
+                            <Label Text="Don't have a account?"
+                                   TextColor="WhiteSmoke"
+                                   FontSize="12"
+                                   FontFamily="Montserrat"/>
+                            <Label Text="Sign Up Now"
+                                   TextColor="AliceBlue"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   FontFamily="Montserrat"
+                                   Margin="5,0,0,0">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnSignUpLabelTapped}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+
+                        <!-- Ajoutez ceci sous le bouton de connexion -->
+                        <ActivityIndicator Margin="50" WidthRequest="60" HeightRequest="60" x:Name="loadingIndicator"
+                   Color="White"
+                   IsRunning="{Binding IsLoading}"
+                   IsVisible="{Binding IsLoading}" />
+
+                    </StackLayout>
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

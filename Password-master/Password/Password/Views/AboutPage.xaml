@@ -1,0 +1,133 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Password.ViewModels"
+             x:Class="Password.Views.AboutPage"
+             xmlns:fontawesome="clr-namespace:FontAwesome"
+             x:Name="AboutPageContent"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="True">
+
+    <!-- Set ViewModel for this view -->
+    <ContentPage.BindingContext>
+        <viewmodels:AboutViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Define resources like the background gradient for this view -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="1,0" EndPoint="1,1">
+                <GradientStop Color="#ff8a78" Offset="0.0"/>
+                <GradientStop Color="#ff8a78" Offset="0.2"/>
+                <GradientStop Color="#ff5772" Offset="0.8"/>
+                <GradientStop Color="#ff416f" Offset="1.0"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Main content of the view -->
+    <Grid Background="{StaticResource BackgroundGradient}">
+        <StackLayout Padding="20">
+
+            <!-- Application Logo -->
+            <Image Source="Logo.png" WidthRequest="80" HeightRequest="80" />
+
+            <!-- Page Title -->
+            <Label Text="Your Apps" Margin="0,0,0,10" FontSize="Large" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" 
+                   FontFamily="Montserrat" TextColor="White" />
+
+            <!-- Search bar for applications -->
+            <Frame CornerRadius="30" BackgroundColor="#f8afa6" Padding="5" 
+                   HasShadow="False" BorderColor="#ff8991" VerticalOptions="Start"
+                   HorizontalOptions="Center" WidthRequest="300" HeightRequest="60">
+                <SearchBar Placeholder="Search for an app" 
+                           Text="{Binding SearchText}" 
+                           PlaceholderColor="WhiteSmoke"
+                           HorizontalOptions="FillAndExpand" 
+                           BackgroundColor="Transparent" 
+                           TextColor="White" />
+            </Frame>
+
+            <!-- List of credentials -->
+            <ListView ItemsSource="{Binding Credentials}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <!-- Frame for each list item -->
+                            <Frame CornerRadius="12" Padding="10" BackgroundColor="White" Opacity="0.95" Margin="0,10">
+                                <!-- Added 10 units margin -->
+                                <StackLayout Orientation="Vertical" Spacing="5">
+
+                                    <!-- Application Name -->
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                        <Label Text="{Binding Application}" FontSize="Title" 
+                                               FontFamily="Montserrat" TextColor="#ff416f" />
+                                    </StackLayout>
+
+                                    <!-- Credential Information: Username, Password, Email, URL -->
+
+                                    <!-- Username -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{x:Static fontawesome:FontAwesomeIcons.User}" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="Medium" TextColor="#ff416f" />
+                                        <Label Text="{Binding UserNameApp}" FontSize="Small" 
+                                               FontFamily="Montserrat" TextColor="#ff416f" />
+                                    </StackLayout>
+
+                                    <!-- Password -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{x:Static fontawesome:FontAwesomeIcons.Key}" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="Medium" TextColor="#ff416f" />
+                                        <Label Text="{Binding VisiblePassword}" FontSize="Small" FontFamily="Montserrat" TextColor="#ff416f" />
+                                    </StackLayout>
+
+                                    <!-- Email -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{x:Static fontawesome:FontAwesomeIcons.At}" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="Medium" TextColor="#ff416f" />
+                                        <Label Text="{Binding Email}" FontSize="Small" 
+                                               FontFamily="Montserrat" TextColor="#ff416f" />
+                                    </StackLayout>
+
+                                    <!-- URL -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{x:Static fontawesome:FontAwesomeIcons.ArrowPointer}" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="Medium" TextColor="#ff416f" />
+                                        <Label Text="{Binding URL}" FontSize="Small" 
+                                               FontFamily="Montserrat" TextColor="#ff416f" />
+                                    </StackLayout>
+
+                                    <!-- Action buttons for each item: Edit, Delete, Show Password -->
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="10">
+                                        <Button CornerRadius="30" WidthRequest="50" BackgroundColor="#ff416f" TextColor="White" 
+                                                Text="{x:Static fontawesome:FontAwesomeIcons.Pen}" 
+                                                FontFamily="{StaticResource FontAwesomeSolid}" 
+                                                Command="{Binding BindingContext.ModifyCommand, Source={x:Reference AboutPageContent}}" 
+                                                CommandParameter="{Binding}" />
+                                        <Button CornerRadius="30" WidthRequest="50" BackgroundColor="#ff416f" TextColor="White" 
+                                                Text="{x:Static fontawesome:FontAwesomeIcons.Trash}" 
+                                                FontFamily="{StaticResource FontAwesomeSolid}" 
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference AboutPageContent}}" 
+                                                CommandParameter="{Binding}"   />
+                                        <Button CornerRadius="30" WidthRequest="50" BackgroundColor="#ff416f" TextColor="White" 
+                                                Text="{Binding EyeIcon}"                                               
+                                                FontFamily="{StaticResource FontAwesomeSolid}" 
+                                                Command="{Binding BindingContext.TogglePasswordVisibilityCommand, Source={x:Reference AboutPageContent}}" 
+                                                CommandParameter="{Binding}" 
+                                                IsEnabled="{Binding BindingContext.CanTogglePassword, Source={x:Reference AboutPageContent}}" 
+                                                Visual="Material" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Button to add a new application -->
+            <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" Padding="5">
+                <Button Text="{x:Static fontawesome:FontAwesomeIcons.Plus}" 
+                        FontFamily="{StaticResource FontAwesomeSolid}" FontSize="38" BackgroundColor="#f8afa6" TextColor="White" 
+                        CornerRadius="30" WidthRequest="60" HeightRequest="60" 
+                        VerticalOptions="Center" HorizontalOptions="Center"
+                        Command="{Binding AddCommand}" />
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+</ContentPage>
